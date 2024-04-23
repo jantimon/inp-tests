@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "test": "npm run build && start-server-and-test start http://localhost:3000 test:cypress",
-    "test:cypress": "cypress run",
+    "test:cypress": "cypress run --browser chrome",
     "test:watch": "start-server-and-test dev http://localhost:3000 test:cypress:watch",
     "test:cypress:watch": "cypress open"
   },
