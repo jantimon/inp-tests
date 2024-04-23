@@ -37,7 +37,7 @@ describe("INP Tests", () => {
     expectInp({ min: 200 });
   });
 
-  it("button with artificial main thread delay inside onIdle has a good INP", () => {
+  it("button with artificial main thread delay inside requestIdleCallback has a good INP", () => {
     cy.visit("http://localhost:3000");
     cy.wait(200);
 
