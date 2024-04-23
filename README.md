@@ -8,3 +8,5 @@ This is a simple project to test the impact of different actions on the Input to
 - button with artificial main thread delay inside setTimeout has a bad INP
 - fetching data has a good INP
 - :active does not improve a bad INP
+
+Full [test suite](https://github.com/jantimon/inp-tests/blob/main/cypress/e2e/spec.cy.ts)
