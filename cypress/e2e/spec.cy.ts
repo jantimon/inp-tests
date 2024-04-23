@@ -118,6 +118,23 @@ describe("INP Tests", () => {
   });
 });
 
+describe("INP Test React State" , () => {
+  it("useState with slow useEffects has a bad INP", () => {
+    cy.visit("http://localhost:3000/state");
+    cy.wait(200);
+
+    cy.get("button#state").realClick();
+    expectInp("good");
+  })
+  it("useTransition with slow useEffects has a good INP", () => {
+    cy.visit("http://localhost:3000/state");
+    cy.wait(200);
+
+    cy.get("button#state").realClick();
+    expectInp("good");
+  })
+});
+
 function expectInp(
   option: number | { min?: number; max?: number } | "good" | "needs-improvement"
 ) {

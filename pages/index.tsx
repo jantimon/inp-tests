@@ -1,16 +1,6 @@
 import { useInpOverlay } from "@/inpOverlay";
 
-const freezeMainThread = (duration: number) => {
-  console.log("Freeze")
-  const start = Date.now();
-  while (Date.now() - start < duration) {}
-  console.log("Unfreeze")
-};
-// @ts-ignore
-globalThis.freezeMainThread = freezeMainThread;
-
 export default function Home() {
-  useInpOverlay();
   return (
     <main>
       <h1>INP Tests</h1>
