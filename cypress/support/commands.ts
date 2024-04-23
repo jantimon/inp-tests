@@ -14,16 +14,16 @@ import type Chainable from 'cypress';
 Cypress.Commands.add('addEvent', {
     prevSubject: true,
   },
-  (subject, fn) => {
+  (subject, eventName, fn) => {
     const code = fn.toString();
-    subject[0].addEventListener("click", fn);
+    subject[0].addEventListener(eventName, fn);
     return subject;
  })
 
 declare global {
   namespace Cypress {
     interface Chainable {
-        addEvent(fn: () => void): Chainable<void>
+        addEvent(eventName: string, fn: () => void): Chainable<void>
     }
   }
 }

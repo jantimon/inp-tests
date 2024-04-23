@@ -2,10 +2,10 @@
 import "cypress-real-events";
 
 const freezeMainThread = (duration: number) => {
-  console.log("Freeze")
+  console.log("Freeze");
   const start = Date.now();
   while (Date.now() - start < duration) {}
-  console.log("Unfreeze")
+  console.log("Unfreeze");
 };
 
 describe("INP Tests", () => {
@@ -30,7 +30,7 @@ describe("INP Tests", () => {
     cy.wait(200);
 
     cy.get("#button")
-      .addEvent(() => {
+      .addEvent("click", () => {
         freezeMainThread(200);
       })
       .realClick();
@@ -42,7 +42,7 @@ describe("INP Tests", () => {
     cy.wait(200);
 
     cy.get("#button")
-      .addEvent(() => {
+      .addEvent("click", () => {
         requestIdleCallback(() => freezeMainThread(200));
       })
       .realClick();
@@ -55,7 +55,7 @@ describe("INP Tests", () => {
     cy.wait(200);
 
     cy.get("#button")
-      .addEvent(() => {
+      .addEvent("click", () => {
         requestAnimationFrame(() => freezeMainThread(200));
       })
       .realClick();
@@ -63,12 +63,29 @@ describe("INP Tests", () => {
     expectInp("needs-improvement");
   });
 
+  it("button with artificial main thread delay inside two requestAnimationFrames has a bad INP", () => {
+    cy.visit("http://localhost:3000");
+    cy.wait(200);
+
+    cy.get("#button")
+      .addEvent("click", () => {
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            freezeMainThread(200);
+          });
+        });
+      })
+      .realClick();
+
+    expectInp("good");
+  });
+
   it("button with artificial main thread delay inside setTimeout has a bad INP", () => {
     cy.visit("http://localhost:3000");
     cy.wait(200);
 
     cy.get("#button")
-      .addEvent(() => {
+      .addEvent("click", () => {
         setTimeout(() => freezeMainThread(200));
       })
       .realClick();
@@ -79,9 +96,9 @@ describe("INP Tests", () => {
   it("fetching data has a good INP", () => {
     cy.visit("http://localhost:3000");
     cy.wait(200);
-  
+
     cy.get("#button")
-      .addEvent(() => {
+      .addEvent("click", () => {
         fetch("/api/hello");
       })
       .realClick();
@@ -93,7 +110,7 @@ describe("INP Tests", () => {
     cy.wait(200);
 
     cy.get("#buttonActive")
-      .addEvent(() => {
+      .addEvent("click", () => {
         freezeMainThread(200);
       })
       .realClick();
